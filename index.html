@@ -54,7 +54,8 @@
   </style>
  </head>
  <body class="h-full">
-  <div id="app-wrapper" class="h-full w-full overflow-auto" style="background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);"><!-- Notification Toast -->
+  <div id="app-wrapper" class="h-full w-full overflow-auto" style="background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);">
+   <!-- Notification Toast -->
    <div id="notification-toast" class="fixed top-4 right-4 z-50 hidden">
     <div class="bg-emerald-500 text-white px-6 py-4 rounded-2xl shadow-2xl notification-slide flex items-center gap-3 max-w-sm">
      <div class="text-3xl">
@@ -77,9 +78,11 @@
      </div>
      <div class="bg-white/10 backdrop-blur-lg rounded-3xl p-8 shadow-2xl border border-white/20">
       <div class="space-y-5">
-       <div><label for="login-username" class="block text-white font-semibold mb-2 text-sm">Username</label> <input type="text" id="login-username" placeholder="Enter your username" class="w-full px-5 py-4 rounded-xl bg-white/90 text-slate-800 placeholder-slate-400 font-medium focus:outline-none focus:ring-4 focus:ring-emerald-400/50 transition-all">
+       <div>
+        <label for="login-username" class="block text-white font-semibold mb-2 text-sm">Username</label> <input type="text" id="login-username" placeholder="Enter your username" class="w-full px-5 py-4 rounded-xl bg-white/90 text-slate-800 placeholder-slate-400 font-medium focus:outline-none focus:ring-4 focus:ring-emerald-400/50 transition-all">
        </div>
-       <div><label for="login-password" class="block text-white font-semibold mb-2 text-sm">Password</label> <input type="password" id="login-password" placeholder="Enter your password" class="w-full px-5 py-4 rounded-xl bg-white/90 text-slate-800 placeholder-slate-400 font-medium focus:outline-none focus:ring-4 focus:ring-emerald-400/50 transition-all">
+       <div>
+        <label for="login-password" class="block text-white font-semibold mb-2 text-sm">Password</label> <input type="password" id="login-password" placeholder="Enter your password" class="w-full px-5 py-4 rounded-xl bg-white/90 text-slate-800 placeholder-slate-400 font-medium focus:outline-none focus:ring-4 focus:ring-emerald-400/50 transition-all">
        </div>
        <div id="login-error" class="text-red-400 text-sm text-center hidden"></div><button onclick="handleLogin()" class="w-full py-4 bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-600 hover:to-teal-600 text-white font-bold rounded-xl text-lg transition-all transform hover:scale-[1.02] shadow-lg shadow-emerald-500/30">Login 🐾</button>
        <p class="text-center text-slate-300 text-sm">Don't have an account? <button onclick="goToSignup()" class="text-emerald-400 hover:text-emerald-300 font-bold underline">Sign Up</button></p>
@@ -96,9 +99,11 @@
      </div>
      <div class="space-y-4">
       <p class="text-slate-300 text-sm">Enter your username and email to reset your password</p>
-      <div><label class="block text-white font-semibold mb-2 text-sm">Username</label> <input type="text" id="user-forgot-username" placeholder="Enter your username" class="w-full px-5 py-3 rounded-xl bg-white/90 text-slate-800 placeholder-slate-400 font-medium focus:outline-none focus:ring-4 focus:ring-emerald-400/50 transition-all">
+      <div>
+       <label class="block text-white font-semibold mb-2 text-sm">Username</label> <input type="text" id="user-forgot-username" placeholder="Enter your username" class="w-full px-5 py-3 rounded-xl bg-white/90 text-slate-800 placeholder-slate-400 font-medium focus:outline-none focus:ring-4 focus:ring-emerald-400/50 transition-all">
       </div>
-      <div><label class="block text-white font-semibold mb-2 text-sm">Email</label> <input type="email" id="user-forgot-email" placeholder="Enter your email" class="w-full px-5 py-3 rounded-xl bg-white/90 text-slate-800 placeholder-slate-400 font-medium focus:outline-none focus:ring-4 focus:ring-emerald-400/50 transition-all">
+      <div>
+       <label class="block text-white font-semibold mb-2 text-sm">Email</label> <input type="email" id="user-forgot-email" placeholder="Enter your email" class="w-full px-5 py-3 rounded-xl bg-white/90 text-slate-800 placeholder-slate-400 font-medium focus:outline-none focus:ring-4 focus:ring-emerald-400/50 transition-all">
       </div>
       <div id="user-forgot-error" class="text-red-400 text-sm hidden"></div>
       <div id="user-forgot-success" class="text-emerald-400 text-sm hidden"></div><button onclick="handleUserPasswordReset()" class="w-full py-3 bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-600 hover:to-teal-600 text-white font-bold rounded-xl transition-all transform hover:scale-[1.02] shadow-lg shadow-emerald-500/30">Send Reset Link</button> <button onclick="closeUserForgotModal()" class="w-full py-2 bg-slate-700 hover:bg-slate-600 text-white font-semibold rounded-lg transition-all">Back to Login</button>
@@ -111,26 +116,32 @@
       <h2 class="text-3xl font-bold text-amber-400">🔐 Admin Portal</h2><button onclick="closeAdminModal()" class="text-slate-400 hover:text-white text-2xl">✕</button>
      </div>
      <div id="admin-login-form" class="space-y-4">
-      <div><label class="block text-white font-semibold mb-2 text-sm">Admin Password</label> <input type="password" id="admin-password" placeholder="Enter admin password" class="w-full px-5 py-3 rounded-xl bg-white/90 text-slate-800 placeholder-slate-400 font-medium focus:outline-none focus:ring-4 focus:ring-amber-400/50 transition-all">
+      <div>
+       <label class="block text-white font-semibold mb-2 text-sm">Admin Password</label> <input type="password" id="admin-password" placeholder="Enter admin password" class="w-full px-5 py-3 rounded-xl bg-white/90 text-slate-800 placeholder-slate-400 font-medium focus:outline-none focus:ring-4 focus:ring-amber-400/50 transition-all">
       </div>
       <div id="admin-error" class="text-red-400 text-sm hidden"></div><button onclick="handleAdminLogin()" class="w-full py-3 bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-600 hover:to-orange-600 text-white font-bold rounded-xl transition-all transform hover:scale-[1.02] shadow-lg shadow-amber-500/30">Enter Admin Portal</button>
       <p class="text-center text-slate-400 text-sm"><button onclick="showForgotPasswordForm()" class="text-amber-400 hover:text-amber-300 underline">Forgot Password?</button></p>
      </div>
      <div id="admin-setup-form" class="space-y-4 hidden">
       <p class="text-amber-300 text-sm font-semibold">First-time setup: Create your admin password</p>
-      <div><label class="block text-white font-semibold mb-2 text-sm">New Admin Password</label> <input type="password" id="admin-new-password" placeholder="Create a strong password" class="w-full px-5 py-3 rounded-xl bg-white/90 text-slate-800 placeholder-slate-400 font-medium focus:outline-none focus:ring-4 focus:ring-amber-400/50 transition-all">
+      <div>
+       <label class="block text-white font-semibold mb-2 text-sm">New Admin Password</label> <input type="password" id="admin-new-password" placeholder="Create a strong password" class="w-full px-5 py-3 rounded-xl bg-white/90 text-slate-800 placeholder-slate-400 font-medium focus:outline-none focus:ring-4 focus:ring-amber-400/50 transition-all">
       </div>
-      <div><label class="block text-white font-semibold mb-2 text-sm">Confirm Password</label> <input type="password" id="admin-confirm-password" placeholder="Confirm password" class="w-full px-5 py-3 rounded-xl bg-white/90 text-slate-800 placeholder-slate-400 font-medium focus:outline-none focus:ring-4 focus:ring-amber-400/50 transition-all">
+      <div>
+       <label class="block text-white font-semibold mb-2 text-sm">Confirm Password</label> <input type="password" id="admin-confirm-password" placeholder="Confirm password" class="w-full px-5 py-3 rounded-xl bg-white/90 text-slate-800 placeholder-slate-400 font-medium focus:outline-none focus:ring-4 focus:ring-amber-400/50 transition-all">
       </div>
       <div id="admin-setup-error" class="text-red-400 text-sm hidden"></div><button onclick="handleAdminSetup()" class="w-full py-3 bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-600 hover:to-orange-600 text-white font-bold rounded-xl transition-all transform hover:scale-[1.02] shadow-lg shadow-amber-500/30">Create Admin Account</button>
      </div>
      <div id="admin-forgot-form" class="space-y-4 hidden">
       <p class="text-amber-300 text-sm font-semibold">Reset Your Admin Password</p>
-      <div><label class="block text-white font-semibold mb-2 text-sm">Security Question Answer</label> <input type="text" id="admin-security-answer" placeholder="Enter your security answer" class="w-full px-5 py-3 rounded-xl bg-white/90 text-slate-800 placeholder-slate-400 font-medium focus:outline-none focus:ring-4 focus:ring-amber-400/50 transition-all">
+      <div>
+       <label class="block text-white font-semibold mb-2 text-sm">Security Question Answer</label> <input type="text" id="admin-security-answer" placeholder="Enter your security answer" class="w-full px-5 py-3 rounded-xl bg-white/90 text-slate-800 placeholder-slate-400 font-medium focus:outline-none focus:ring-4 focus:ring-amber-400/50 transition-all">
       </div>
-      <div><label class="block text-white font-semibold mb-2 text-sm">New Password</label> <input type="password" id="admin-reset-password" placeholder="Create new password" class="w-full px-5 py-3 rounded-xl bg-white/90 text-slate-800 placeholder-slate-400 font-medium focus:outline-none focus:ring-4 focus:ring-amber-400/50 transition-all">
+      <div>
+       <label class="block text-white font-semibold mb-2 text-sm">New Password</label> <input type="password" id="admin-reset-password" placeholder="Create new password" class="w-full px-5 py-3 rounded-xl bg-white/90 text-slate-800 placeholder-slate-400 font-medium focus:outline-none focus:ring-4 focus:ring-amber-400/50 transition-all">
       </div>
-      <div><label class="block text-white font-semibold mb-2 text-sm">Confirm New Password</label> <input type="password" id="admin-reset-confirm" placeholder="Confirm new password" class="w-full px-5 py-3 rounded-xl bg-white/90 text-slate-800 placeholder-slate-400 font-medium focus:outline-none focus:ring-4 focus:ring-amber-400/50 transition-all">
+      <div>
+       <label class="block text-white font-semibold mb-2 text-sm">Confirm New Password</label> <input type="password" id="admin-reset-confirm" placeholder="Confirm new password" class="w-full px-5 py-3 rounded-xl bg-white/90 text-slate-800 placeholder-slate-400 font-medium focus:outline-none focus:ring-4 focus:ring-amber-400/50 transition-all">
       </div>
       <div id="admin-forgot-error" class="text-red-400 text-sm hidden"></div><button onclick="handlePasswordReset()" class="w-full py-3 bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-600 hover:to-orange-600 text-white font-bold rounded-xl transition-all transform hover:scale-[1.02] shadow-lg shadow-amber-500/30">Reset Password</button> <button onclick="backToAdminLogin()" class="w-full py-2 bg-slate-700 hover:bg-slate-600 text-white font-semibold rounded-lg transition-all">Back to Login</button>
      </div>
@@ -280,7 +291,7 @@
       const result = await window.dataSdk.create({
         type: 'admin',
         password: btoa(newPassword),
-        security_answer: btoa('pet'), // Default security answer - can be customized
+        security_answer: 'pet', // Default security answer - can be customized
         created_at: new Date().toISOString()
       });
 
@@ -432,8 +443,8 @@
 
       const adminUser = adminUsers[0];
       
-      // Check if security answer matches (stored as base64)
-      if (btoa(securityAnswer.toLowerCase()) !== (adminUser.security_answer || '')) {
+      // Check if security answer matches
+      if (securityAnswer.toLowerCase() !== (adminUser.security_answer || '')) {
         forgotError.textContent = 'Incorrect security answer';
         forgotError.classList.remove('hidden');
         return;
@@ -535,5 +546,5 @@
       }
     }
   </script>
- <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9e4f4a9317580f8c',t:'MTc3NDk1OTQ1MC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+ <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9e4f596486166a50',t:'MTc3NDk2MDA1Ny4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
 </html>
