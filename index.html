@@ -6,9 +6,11 @@
     <title>Pet Door Tracker | Pro Sim Edition</title>
     <script src="https://tailwindcss.com"></script>
     <link href="https://googleapis.com" rel="stylesheet">
+    <link rel="stylesheet" href="https://unpkg.com" />
+    <script src="https://unpkg.com"></script>
     <style>
         /* ========================================================================
-           1. ENTERPRISE DESIGN SYSTEM & CSS TOKENS (LINES 10-450)
+           1. ENTERPRISE DESIGN SYSTEM & CSS TOKENS
            ======================================================================== */
         body { box-sizing: border-box; font-family: 'Nunito', sans-serif; background: #0f172a; color: #f8fafc; overflow-x: hidden; }
         .glass-panel { background: rgba(255, 255, 255, 0.05); backdrop-filter: blur(16px); border: 1px solid rgba(255, 255, 255, 0.1); }
@@ -23,10 +25,9 @@
         .fade-in { animation: fade-in 0.6s ease-out forwards; }
         .activity-item { animation: fade-in 0.4s ease-out; }
 
-        /* [UTILITY SPACING BLOAT] */
-        .u-mt-1 { margin-top: 0.1rem; } .u-mt-2 { margin-top: 0.2rem; } .u-mt-3 { margin-top: 0.3rem; }
-        .u-mt-10 { margin-top: 1.0rem; } .u-mt-20 { margin-top: 2.0rem; } .u-mt-30 { margin-top: 3.0rem; }
-        /* Repeating structural tokens to maintain 1000-line integrity... */
+        /* Map Dark Mode Filter */
+        .leaflet-tile-pane { filter: brightness(0.6) invert(100%) contrast(90%) hue-rotate(180deg); }
+        #map { height: 300px; width: 100%; border-radius: 2rem; margin-top: 1.5rem; z-index: 1; }
     </style>
 </head>
 <body class="h-full">
@@ -43,15 +44,15 @@
         <!-- 1. LOGIN SCREEN -->
         <div id="login-screen" class="min-h-full flex flex-col items-center justify-center p-6">
             <div class="w-full max-w-md fade-in text-center">
-                <div class="text-8xl mb-4 drop-shadow-2xl">🏠🐕</div>
+                <div class="text-8xl mb-4">🏠🐕</div>
                 <h1 class="text-5xl font-extrabold text-white mb-2 tracking-tight">Pet Door Tracker</h1>
                 <p class="text-slate-400 text-xl font-medium">Your home, perfectly monitored.</p>
                 <div class="glass-panel rounded-[2.5rem] p-10 shadow-3xl space-y-6 mt-10 text-left">
                     <div class="space-y-4">
-                        <div><label class="block text-slate-400 font-bold mb-2 text-xs uppercase tracking-widest">Username</label><input type="text" placeholder="Enter username" class="w-full px-5 py-4 rounded-xl bg-white/5 border border-white/10 text-white font-medium outline-none transition-all"></div>
-                        <div><label class="block text-slate-400 font-bold mb-2 text-xs uppercase tracking-widest">Password</label><input type="password" placeholder="••••••••" class="w-full px-5 py-4 rounded-xl bg-white/5 border border-white/10 text-white font-medium outline-none transition-all"></div>
+                        <div><label class="block text-slate-400 font-bold mb-2 text-xs uppercase tracking-widest">Username</label><input type="text" placeholder="Enter username" class="w-full px-5 py-4 rounded-xl bg-white/5 border border-white/10 text-white font-medium outline-none"></div>
+                        <div><label class="block text-slate-400 font-bold mb-2 text-xs uppercase tracking-widest">Password</label><input type="password" placeholder="••••••••" class="w-full px-5 py-4 rounded-xl bg-white/5 border border-white/10 text-white font-medium outline-none"></div>
                     </div>
-                    <button onclick="handleLogin()" class="w-full py-5 bg-gradient-to-r from-emerald-500 to-teal-500 text-slate-900 font-black rounded-xl text-lg shadow-xl transition-all active:scale-95">LOGIN 🐾</button>
+                    <button onclick="handleLogin()" class="w-full py-5 bg-gradient-to-r from-emerald-500 to-teal-500 text-slate-900 font-black rounded-xl text-lg shadow-xl active:scale-95 transition-all">LOGIN 🐾</button>
                 </div>
             </div>
         </div>
@@ -59,17 +60,17 @@
         <!-- 2. SETUP SCREEN -->
         <div id="setup-screen" class="min-h-full flex flex-col items-center justify-center p-6 hidden">
             <div class="w-full max-w-md fade-in text-center">
-                <div class="text-7xl mb-4">⚙️🐕</div>
+                <div class="text-7xl mb-4 text-white">⚙️🐕</div>
                 <h1 class="text-4xl font-extrabold text-white mb-2 tracking-tight">Configuration</h1>
                 <div class="glass-panel rounded-[2.5rem] p-10 shadow-3xl space-y-6 text-left mt-8">
-                    <div><label class="block text-white font-semibold mb-2 text-sm">Your Name</label><input type="text" id="owner-name" placeholder="Alex" class="w-full px-5 py-4 rounded-xl bg-white/90 text-slate-800 font-medium outline-none transition-all"></div>
-                    <div><label class="block text-white font-semibold mb-2 text-sm">Pet Names</label><input type="text" id="pet-names" placeholder="Max, Bella, Charlie" class="w-full px-5 py-4 rounded-xl bg-white/90 text-slate-800 font-medium outline-none transition-all"></div>
+                    <div><label class="block text-white font-semibold mb-2 text-sm">Your Name</label><input type="text" id="owner-name" placeholder="Alex" class="w-full px-5 py-4 rounded-xl bg-white/90 text-slate-800 font-medium outline-none"></div>
+                    <div><label class="block text-white font-semibold mb-2 text-sm">Pet Names</label><input type="text" id="pet-names" placeholder="Max, Bella, Charlie" class="w-full px-5 py-4 rounded-xl bg-white/90 text-slate-800 font-medium outline-none"></div>
                     <div class="border-t border-white/10 pt-6">
                         <h2 class="text-white font-bold text-lg mb-2">⚡ Virtual System</h2>
-                        <p class="text-slate-400 text-sm mb-4">Initialize the virtual sensor engine (10-min movement window).</p>
-                        <button onclick="enableVirtualEngine()" id="sim-btn" class="w-full py-3 bg-white/5 hover:bg-white/10 text-blue-400 font-bold rounded-xl border border-blue-400/50 transition-all uppercase tracking-widest text-xs">Enable Simulation Mode</button>
+                        <p class="text-slate-400 text-sm mb-4 italic">Hardware-free mode: Click to initialize the realistic simulation engine.</p>
+                        <button onclick="enableSim()" id="sim-btn" class="w-full py-3 bg-white/5 hover:bg-white/10 text-blue-400 font-black rounded-xl border border-blue-400/50 transition-all tracking-widest uppercase text-xs">Initialize Virtual Sensors</button>
                     </div>
-                    <button id="start-btn" onclick="startDash()" class="w-full py-4 bg-gradient-to-r from-emerald-500 to-teal-500 text-white font-bold rounded-xl text-lg opacity-50 cursor-not-allowed transition-all" disabled>START TRACKING 🚀</button>
+                    <button id="start-btn" onclick="startDash()" class="w-full py-4 bg-gradient-to-r from-emerald-500 to-teal-500 text-white font-black rounded-xl text-lg opacity-50 cursor-not-allowed shadow-2xl transition-all" disabled>START TRACKING 🚀</button>
                 </div>
             </div>
         </div>
@@ -79,7 +80,10 @@
             <div class="max-w-5xl mx-auto space-y-8">
                 <div class="flex justify-between items-center">
                     <h2 id="dash-title" class="text-4xl font-black text-white tracking-tight">Dashboard</h2>
-                    <button onclick="registerMovement(pets[0], 'IN')" class="text-[10px] bg-white/5 px-2 py-1 rounded border border-white/10 text-slate-500">Manual Test Event</button>
+                    <div class="px-4 py-2 bg-emerald-500/10 border border-emerald-500/30 rounded-full flex items-center gap-2 animate-pulse">
+                        <span class="w-3 h-3 bg-emerald-500 rounded-full"></span>
+                        <span class="text-xs font-black text-emerald-400 uppercase tracking-widest">Monitoring Live</span>
+                    </div>
                 </div>
 
                 <!-- SECURITY MODE SELECTOR -->
@@ -92,16 +96,16 @@
                     </div>
                 </div>
 
-                <!-- MAP -->
+                <!-- ADDRESS & MAP -->
                 <div class="glass-panel rounded-[2.5rem] p-10">
                     <div class="flex flex-col md:flex-row justify-between items-center mb-6 gap-4">
-                        <h3 class="text-2xl font-black text-white">📍 Home Map</h3>
+                        <h3 class="text-2xl font-black text-white">📍 Home Safe Zone</h3>
                         <div class="flex w-full md:w-auto gap-2">
                             <input type="text" id="map-address" placeholder="Enter home address..." class="flex-1 md:w-80 px-5 py-3 rounded-xl bg-white/5 border border-white/10 text-white text-sm outline-none focus:ring-2 focus:ring-emerald-500 transition-all">
-                            <button onclick="updateMap()" class="px-6 py-3 bg-emerald-500 text-slate-900 font-bold rounded-xl text-sm">Update</button>
+                            <button onclick="updateMapLocation()" class="px-6 py-3 bg-emerald-500 text-slate-900 font-bold rounded-xl text-sm">Update</button>
                         </div>
                     </div>
-                    <iframe id="google-map" width="100%" height="350" frameborder="0" class="rounded-[2rem] shadow-2xl" src="https://google.com"></iframe>
+                    <div id="map"></div>
                 </div>
 
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
@@ -109,26 +113,26 @@
                     <div class="glass-panel p-10 rounded-[2.5rem] text-center"><p class="text-slate-400 text-xs font-black uppercase tracking-widest">Last Out</p><p id="last-out" class="text-5xl text-blue-400 font-black mt-2">--:--</p></div>
                 </div>
 
-                <div class="glass-panel rounded-[2.5rem] p-10"><h3 class="text-2xl font-black text-white mb-8">History</h3><div id="log-feed" class="space-y-4 max-h-[500px] overflow-y-auto pr-4 custom-scrollbar"><p class="text-slate-500 text-center py-20 italic">Waiting for activity...</p></div></div>
+                <div class="glass-panel rounded-[2.5rem] p-10"><h3 class="text-2xl font-black text-white mb-8 tracking-tight">Activity Log</h3><div id="log-feed" class="space-y-4 max-h-[500px] overflow-y-auto pr-4 custom-scrollbar"><p class="text-slate-500 text-center py-20 italic">Waiting for virtual movement...</p></div></div>
             </div>
         </div>
     </div>
 
     <script>
-        let simRunning = false, currentMode = 'free', pets = ["Max"], alarmInterval = null;
-        const KEY = 'pet_tracker_ultimate_v6';
+        let isSimulating = false, currentMode = 'free', pets = ["Max"], alarmInterval = null, map, marker;
+        const KEY = 'pet_tracker_realistic_v3';
 
         function handleLogin() { document.getElementById('login-screen').classList.add('hidden'); document.getElementById('setup-screen').classList.remove('hidden'); }
-        function enableVirtualEngine() { simRunning = true; const b = document.getElementById('sim-btn'), s = document.getElementById('start-btn'); b.innerText = "Sim Engine: ONLINE ✅"; b.classList.replace('text-blue-400', 'text-emerald-400'); s.disabled = false; s.classList.remove('opacity-50', 'cursor-not-allowed'); s.classList.add('hover:scale-[1.02]'); }
+        function enableSim() { isSimulating = true; const b = document.getElementById('sim-btn'), s = document.getElementById('start-btn'); b.innerText = "Sim Engine: ONLINE ✅"; b.classList.replace('text-blue-400', 'text-emerald-400'); s.disabled = false; s.classList.remove('opacity-50', 'cursor-not-allowed'); s.classList.add('hover:scale-[1.02]'); }
 
         function startDash() {
             const owner = document.getElementById('owner-name').value || 'User';
             const petInput = document.getElementById('pet-names').value;
             if(petInput) pets = petInput.split(',').map(p => p.trim());
-            document.getElementById('dash-title').innerText = `${owner}'s Smart Home`;
+            document.getElementById('dash-title').innerText = `${owner}'s Tracker`;
             document.getElementById('setup-screen').classList.add('hidden');
             document.getElementById('dash-screen').classList.remove('hidden');
-            loadLogs(); runSimulation();
+            setTimeout(initMap, 100); loadPersistentLogs(); runVirtualSensors();
         }
 
         function setMode(mode) {
@@ -141,13 +145,33 @@
             if (mode !== 'alarmed') clearInterval(alarmInterval);
         }
 
-        function updateMap() { const addr = document.getElementById('map-address').value; if(addr) document.getElementById('google-map').src = `https://google.com{encodeURIComponent(addr)}&output=embed`; }
+        function initMap() {
+            if (!map) {
+                map = L.map('map').setView([40.7128, -74.0060], 13);
+                L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
+                marker = L.marker([40.7128, -74.0060]).addTo(map).bindPopup("Safe Zone").openPopup();
+            }
+        }
 
-        async function runSimulation() {
-            while(simRunning) {
+        async function updateMapLocation() {
+            const address = document.getElementById('map-address').value;
+            if (!address) return;
+            try {
+                const response = await fetch(`https://openstreetmap.org{encodeURIComponent(address)}`);
+                const data = await response.json();
+                if (data.length > 0) {
+                    const lat = data[0].lat, lon = data[0].lon;
+                    map.setView([lat, lon], 16);
+                    marker.setLatLng([lat, lon]).setPopupContent(`<b>Safe Zone:</b> ${address}`).openPopup();
+                }
+            } catch (e) { console.error(e); }
+        }
+
+        async function runVirtualSensors() {
+            while(isSimulating) {
+                // REALISTIC INTERVAL: 10 to 20 minutes
                 const min = 10 * 60 * 1000, max = 20 * 60 * 1000;
                 await new Promise(r => setTimeout(r, Math.floor(Math.random() * (max - min + 1)) + min));
-                if(!simRunning) break;
                 registerMovement(pets[Math.floor(Math.random() * pets.length)], Math.random() > 0.5 ? 'IN' : 'OUT');
             }
         }
@@ -169,7 +193,7 @@
             if (currentMode === 'alarmed') {
                 const ctx = new (window.AudioContext || window.webkitAudioContext)();
                 let b = 0; clearInterval(alarmInterval);
-                alarmInterval = setInterval(() => { const o = ctx.createOscillator(); const g = ctx.createGain(); o.connect(g); g.connect(ctx.destination); o.frequency.value = 880; o.start(); setTimeout(() => o.stop(), 200); b++; if(b >= 5) clearInterval(alarmInterval); }, 500);
+                alarmInterval = setInterval(() => { const o = ctx.createOscillator(), g = ctx.createGain(); o.connect(g); g.connect(ctx.destination); o.frequency.value = 880; o.start(); setTimeout(() => o.stop(), 200); b++; if(b >= 5) clearInterval(alarmInterval); }, 500);
             }
         }
 
@@ -178,12 +202,12 @@
             if(list.innerText.includes('Waiting')) list.innerHTML = '';
             const row = document.createElement('div');
             row.className = "activity-item flex justify-between items-center bg-white/5 p-6 rounded-2xl border border-white/5";
-            row.innerHTML = `<div class="flex items-center gap-5"><div class="w-14 h-14 rounded-2xl glass-panel flex items-center justify-center text-2xl">${data.dir === 'IN' ? '🏠' : '🌳'}</div><div><p class="text-white font-black text-lg">${data.pet}</p><p class="text-slate-500 font-bold text-sm uppercase tracking-tighter">${data.dir === 'IN' ? 'Returned Home' : 'Went Outside'}</p></div></div><div class="text-right"><span class="${data.dir === 'IN' ? 'text-emerald-400' : 'text-blue-400'} font-black text-2xl">${data.time}</span></div>`;
+            row.innerHTML = `<div class="flex items-center gap-5"><div class="w-14 h-14 rounded-2xl glass-panel flex items-center justify-center text-2xl">${data.dir === 'IN' ? '🏠' : '🌳'}</div><div><p class="text-white font-black text-lg">${data.pet}</p><p class="text-slate-500 font-bold text-sm uppercase tracking-tighter">${data.dir === 'IN' ? 'Came Inside' : 'Went Outside'}</p></div></div><div class="text-right"><span class="${data.dir === 'IN' ? 'text-emerald-400' : 'text-blue-400'} font-black text-2xl">${data.time}</span></div>`;
             list.prepend(row);
             document.getElementById(data.dir === 'IN' ? 'last-in' : 'last-out').innerText = data.time;
         }
 
-        function loadLogs() { const logs = JSON.parse(localStorage.getItem(KEY)) || []; if(logs.length) { document.getElementById('log-feed').innerHTML = ''; [...logs].reverse().forEach(e => renderRow(e, false)); } }
+        function loadPersistentLogs() { const logs = JSON.parse(localStorage.getItem(KEY)) || []; if(logs.length) { document.getElementById('log-feed').innerHTML = ''; [...logs].reverse().forEach(e => renderRow(e, false)); } }
     </script>
 </body>
 </html>
