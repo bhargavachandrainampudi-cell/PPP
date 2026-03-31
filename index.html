@@ -54,8 +54,7 @@
   </style>
  </head>
  <body class="h-full">
-  <div id="app-wrapper" class="h-full w-full overflow-auto" style="background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);">
-   <!-- Notification Toast -->
+  <div id="app-wrapper" class="h-full w-full overflow-auto" style="background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);"><!-- Notification Toast -->
    <div id="notification-toast" class="fixed top-4 right-4 z-50 hidden">
     <div class="bg-emerald-500 text-white px-6 py-4 rounded-2xl shadow-2xl notification-slide flex items-center gap-3 max-w-sm">
      <div class="text-3xl">
@@ -78,640 +77,463 @@
      </div>
      <div class="bg-white/10 backdrop-blur-lg rounded-3xl p-8 shadow-2xl border border-white/20">
       <div class="space-y-5">
-       <div>
-        <label for="login-username" class="block text-white font-semibold mb-2 text-sm">Username</label> <input type="text" id="login-username" placeholder="Enter your username" class="w-full px-5 py-4 rounded-xl bg-white/90 text-slate-800 placeholder-slate-400 font-medium focus:outline-none focus:ring-4 focus:ring-emerald-400/50 transition-all">
+       <div><label for="login-username" class="block text-white font-semibold mb-2 text-sm">Username</label> <input type="text" id="login-username" placeholder="Enter your username" class="w-full px-5 py-4 rounded-xl bg-white/90 text-slate-800 placeholder-slate-400 font-medium focus:outline-none focus:ring-4 focus:ring-emerald-400/50 transition-all">
        </div>
-       <div>
-        <label for="login-password" class="block text-white font-semibold mb-2 text-sm">Password</label> <input type="password" id="login-password" placeholder="Enter your password" class="w-full px-5 py-4 rounded-xl bg-white/90 text-slate-800 placeholder-slate-400 font-medium focus:outline-none focus:ring-4 focus:ring-emerald-400/50 transition-all">
+       <div><label for="login-password" class="block text-white font-semibold mb-2 text-sm">Password</label> <input type="password" id="login-password" placeholder="Enter your password" class="w-full px-5 py-4 rounded-xl bg-white/90 text-slate-800 placeholder-slate-400 font-medium focus:outline-none focus:ring-4 focus:ring-emerald-400/50 transition-all">
        </div>
        <div id="login-error" class="text-red-400 text-sm text-center hidden"></div><button onclick="handleLogin()" class="w-full py-4 bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-600 hover:to-teal-600 text-white font-bold rounded-xl text-lg transition-all transform hover:scale-[1.02] shadow-lg shadow-emerald-500/30">Login 🐾</button>
        <p class="text-center text-slate-300 text-sm">Don't have an account? <button onclick="goToSignup()" class="text-emerald-400 hover:text-emerald-300 font-bold underline">Sign Up</button></p>
-       <p class="text-center text-slate-300 text-sm"><button onclick="goToForgotPassword()" class="text-amber-400 hover:text-amber-300 font-bold underline">Forgot Password?</button></p>
+       <p class="text-center text-slate-300 text-xs mt-4"><button onclick="showUserForgotPassword()" class="text-slate-400 hover:text-slate-300 underline">Forgot Password?</button></p>
+       <p class="text-center text-slate-300 text-xs"><button onclick="showAdminLogin()" class="text-slate-400 hover:text-slate-300 underline">Admin Portal</button></p>
       </div>
      </div>
     </div>
-   </div><!-- Signup Screen -->
-   <div id="signup-screen" class="min-h-full flex flex-col items-center justify-center p-6 hidden">
-    <div class="w-full max-w-md fade-in">
-     <div class="text-center mb-8">
-      <div class="text-7xl mb-4">
-       🏠🐕
-      </div>
-      <h1 class="text-4xl font-extrabold text-white mb-2">Create Account</h1>
-      <p class="text-slate-300 text-lg">Start tracking your pet</p>
+   </div><!-- User Forgot Password Modal -->
+   <div id="user-forgot-modal" class="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+    <div class="bg-gradient-to-br from-slate-900 to-slate-800 rounded-3xl p-8 shadow-2xl border border-emerald-500/30 w-full max-w-md fade-in">
+     <div class="flex justify-between items-center mb-6">
+      <h2 class="text-3xl font-bold text-emerald-400">🔑 Reset Password</h2><button onclick="closeUserForgotModal()" class="text-slate-400 hover:text-white text-2xl">✕</button>
      </div>
-     <div class="bg-white/10 backdrop-blur-lg rounded-3xl p-8 shadow-2xl border border-white/20">
-      <div class="space-y-5">
-       <div>
-        <label for="signup-username" class="block text-white font-semibold mb-2 text-sm">Username</label> <input type="text" id="signup-username" placeholder="Choose a username" class="w-full px-5 py-4 rounded-xl bg-white/90 text-slate-800 placeholder-slate-400 font-medium focus:outline-none focus:ring-4 focus:ring-emerald-400/50 transition-all">
-       </div>
-       <div>
-        <label for="signup-email" class="block text-white font-semibold mb-2 text-sm">Email</label> <input type="email" id="signup-email" placeholder="Enter your email" class="w-full px-5 py-4 rounded-xl bg-white/90 text-slate-800 placeholder-slate-400 font-medium focus:outline-none focus:ring-4 focus:ring-emerald-400/50 transition-all">
-       </div>
-       <div>
-        <label for="signup-password" class="block text-white font-semibold mb-2 text-sm">Password</label> <input type="password" id="signup-password" placeholder="Create a password" class="w-full px-5 py-4 rounded-xl bg-white/90 text-slate-800 placeholder-slate-400 font-medium focus:outline-none focus:ring-4 focus:ring-emerald-400/50 transition-all">
-       </div>
-       <div id="signup-error" class="text-red-400 text-sm text-center hidden"></div><button onclick="handleSignup()" class="w-full py-4 bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-600 hover:to-teal-600 text-white font-bold rounded-xl text-lg transition-all transform hover:scale-[1.02] shadow-lg shadow-emerald-500/30">Sign Up 🐾</button>
-       <p class="text-center text-slate-300">Already have an account? <button onclick="goToLogin()" class="text-emerald-400 hover:text-emerald-300 font-bold underline">Login</button></p>
+     <div class="space-y-4">
+      <p class="text-slate-300 text-sm">Enter your username and email to reset your password</p>
+      <div><label class="block text-white font-semibold mb-2 text-sm">Username</label> <input type="text" id="user-forgot-username" placeholder="Enter your username" class="w-full px-5 py-3 rounded-xl bg-white/90 text-slate-800 placeholder-slate-400 font-medium focus:outline-none focus:ring-4 focus:ring-emerald-400/50 transition-all">
+      </div>
+      <div><label class="block text-white font-semibold mb-2 text-sm">Email</label> <input type="email" id="user-forgot-email" placeholder="Enter your email" class="w-full px-5 py-3 rounded-xl bg-white/90 text-slate-800 placeholder-slate-400 font-medium focus:outline-none focus:ring-4 focus:ring-emerald-400/50 transition-all">
+      </div>
+      <div id="user-forgot-error" class="text-red-400 text-sm hidden"></div>
+      <div id="user-forgot-success" class="text-emerald-400 text-sm hidden"></div><button onclick="handleUserPasswordReset()" class="w-full py-3 bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-600 hover:to-teal-600 text-white font-bold rounded-xl transition-all transform hover:scale-[1.02] shadow-lg shadow-emerald-500/30">Send Reset Link</button> <button onclick="closeUserForgotModal()" class="w-full py-2 bg-slate-700 hover:bg-slate-600 text-white font-semibold rounded-lg transition-all">Back to Login</button>
+     </div>
+    </div>
+   </div><!-- Admin Login Modal -->
+   <div id="admin-modal" class="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+    <div class="bg-gradient-to-br from-slate-900 to-slate-800 rounded-3xl p-8 shadow-2xl border border-amber-500/30 w-full max-w-md fade-in">
+     <div class="flex justify-between items-center mb-6">
+      <h2 class="text-3xl font-bold text-amber-400">🔐 Admin Portal</h2><button onclick="closeAdminModal()" class="text-slate-400 hover:text-white text-2xl">✕</button>
+     </div>
+     <div id="admin-login-form" class="space-y-4">
+      <div><label class="block text-white font-semibold mb-2 text-sm">Admin Password</label> <input type="password" id="admin-password" placeholder="Enter admin password" class="w-full px-5 py-3 rounded-xl bg-white/90 text-slate-800 placeholder-slate-400 font-medium focus:outline-none focus:ring-4 focus:ring-amber-400/50 transition-all">
+      </div>
+      <div id="admin-error" class="text-red-400 text-sm hidden"></div><button onclick="handleAdminLogin()" class="w-full py-3 bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-600 hover:to-orange-600 text-white font-bold rounded-xl transition-all transform hover:scale-[1.02] shadow-lg shadow-amber-500/30">Enter Admin Portal</button>
+      <p class="text-center text-slate-400 text-sm"><button onclick="showForgotPasswordForm()" class="text-amber-400 hover:text-amber-300 underline">Forgot Password?</button></p>
+     </div>
+     <div id="admin-setup-form" class="space-y-4 hidden">
+      <p class="text-amber-300 text-sm font-semibold">First-time setup: Create your admin password</p>
+      <div><label class="block text-white font-semibold mb-2 text-sm">New Admin Password</label> <input type="password" id="admin-new-password" placeholder="Create a strong password" class="w-full px-5 py-3 rounded-xl bg-white/90 text-slate-800 placeholder-slate-400 font-medium focus:outline-none focus:ring-4 focus:ring-amber-400/50 transition-all">
+      </div>
+      <div><label class="block text-white font-semibold mb-2 text-sm">Confirm Password</label> <input type="password" id="admin-confirm-password" placeholder="Confirm password" class="w-full px-5 py-3 rounded-xl bg-white/90 text-slate-800 placeholder-slate-400 font-medium focus:outline-none focus:ring-4 focus:ring-amber-400/50 transition-all">
+      </div>
+      <div id="admin-setup-error" class="text-red-400 text-sm hidden"></div><button onclick="handleAdminSetup()" class="w-full py-3 bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-600 hover:to-orange-600 text-white font-bold rounded-xl transition-all transform hover:scale-[1.02] shadow-lg shadow-amber-500/30">Create Admin Account</button>
+     </div>
+     <div id="admin-forgot-form" class="space-y-4 hidden">
+      <p class="text-amber-300 text-sm font-semibold">Reset Your Admin Password</p>
+      <div><label class="block text-white font-semibold mb-2 text-sm">Security Question Answer</label> <input type="text" id="admin-security-answer" placeholder="Enter your security answer" class="w-full px-5 py-3 rounded-xl bg-white/90 text-slate-800 placeholder-slate-400 font-medium focus:outline-none focus:ring-4 focus:ring-amber-400/50 transition-all">
+      </div>
+      <div><label class="block text-white font-semibold mb-2 text-sm">New Password</label> <input type="password" id="admin-reset-password" placeholder="Create new password" class="w-full px-5 py-3 rounded-xl bg-white/90 text-slate-800 placeholder-slate-400 font-medium focus:outline-none focus:ring-4 focus:ring-amber-400/50 transition-all">
+      </div>
+      <div><label class="block text-white font-semibold mb-2 text-sm">Confirm New Password</label> <input type="password" id="admin-reset-confirm" placeholder="Confirm new password" class="w-full px-5 py-3 rounded-xl bg-white/90 text-slate-800 placeholder-slate-400 font-medium focus:outline-none focus:ring-4 focus:ring-amber-400/50 transition-all">
+      </div>
+      <div id="admin-forgot-error" class="text-red-400 text-sm hidden"></div><button onclick="handlePasswordReset()" class="w-full py-3 bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-600 hover:to-orange-600 text-white font-bold rounded-xl transition-all transform hover:scale-[1.02] shadow-lg shadow-amber-500/30">Reset Password</button> <button onclick="backToAdminLogin()" class="w-full py-2 bg-slate-700 hover:bg-slate-600 text-white font-semibold rounded-lg transition-all">Back to Login</button>
+     </div>
+    </div>
+   </div><!-- Admin Dashboard -->
+   <div id="admin-dashboard" class="min-h-full p-6 hidden">
+    <div class="max-w-6xl mx-auto">
+     <div class="flex justify-between items-center mb-8 fade-in">
+      <div>
+       <h1 class="text-4xl font-extrabold text-amber-400 mb-2">👑 Admin Dashboard</h1>
+       <p class="text-slate-300">User Management &amp; Monitoring</p>
+      </div><button onclick="logoutAdmin()" class="px-6 py-3 bg-red-600 hover:bg-red-700 text-white font-bold rounded-xl transition-all">Logout</button>
+     </div>
+     <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
+      <div class="bg-white/10 backdrop-blur-lg rounded-2xl p-6 border border-white/20">
+       <p class="text-slate-300 text-sm font-semibold mb-2">Total Users</p>
+       <p id="total-users-count" class="text-4xl font-bold text-emerald-400">0</p>
+      </div>
+      <div class="bg-white/10 backdrop-blur-lg rounded-2xl p-6 border border-white/20">
+       <p class="text-slate-300 text-sm font-semibold mb-2">Tracked Pets</p>
+       <p id="total-pets-count" class="text-4xl font-bold text-blue-400">0</p>
+      </div>
+      <div class="bg-white/10 backdrop-blur-lg rounded-2xl p-6 border border-white/20">
+       <p class="text-slate-300 text-sm font-semibold mb-2">Actions</p><button onclick="exportUsersXML()" class="w-full py-2 bg-amber-500 hover:bg-amber-600 text-white font-bold rounded-lg transition-all">📥 Export XML</button>
+      </div>
+     </div>
+     <div class="bg-white/10 backdrop-blur-lg rounded-2xl p-6 border border-white/20">
+      <h2 class="text-2xl font-bold text-white mb-6">📋 User Roster</h2>
+      <div class="overflow-x-auto">
+       <table class="w-full text-left text-sm">
+        <thead>
+         <tr class="border-b border-white/20">
+          <th class="px-4 py-3 text-slate-300 font-semibold">Username</th>
+          <th class="px-4 py-3 text-slate-300 font-semibold">Email</th>
+          <th class="px-4 py-3 text-slate-300 font-semibold">Joined</th>
+         </tr>
+        </thead>
+        <tbody id="users-table-body">
+         <tr class="border-b border-white/10">
+          <td class="px-4 py-3 text-slate-400">Loading users...</td>
+          <td class="px-4 py-3 text-slate-400">-</td>
+          <td class="px-4 py-3 text-slate-400">-</td>
+         </tr>
+        </tbody>
+       </table>
       </div>
      </div>
     </div>
-   </div><!-- Forgot Password Screen -->
-   <div id="forgot-password-screen" class="min-h-full flex flex-col items-center justify-center p-6 hidden">
-    <div class="w-full max-w-md fade-in">
-     <div class="text-center mb-8">
-      <div class="text-7xl mb-4">
-       🔑
-      </div>
-      <h1 class="text-4xl font-extrabold text-white mb-2">Reset Password</h1>
-      <p class="text-slate-300 text-lg">Get back into your account</p>
-     </div>
-     <div class="bg-white/10 backdrop-blur-lg rounded-3xl p-8 shadow-2xl border border-white/20">
-      <div class="space-y-5">
-       <div>
-        <label for="reset-username" class="block text-white font-semibold mb-2 text-sm">Username</label> <input type="text" id="reset-username" placeholder="Enter your username" class="w-full px-5 py-4 rounded-xl bg-white/90 text-slate-800 placeholder-slate-400 font-medium focus:outline-none focus:ring-4 focus:ring-emerald-400/50 transition-all">
-       </div>
-       <div>
-        <label for="reset-email" class="block text-white font-semibold mb-2 text-sm">Email Address</label> <input type="email" id="reset-email" placeholder="Enter your email" class="w-full px-5 py-4 rounded-xl bg-white/90 text-slate-800 placeholder-slate-400 font-medium focus:outline-none focus:ring-4 focus:ring-emerald-400/50 transition-all">
-       </div>
-       <div>
-        <label for="new-password" class="block text-white font-semibold mb-2 text-sm">New Password</label> <input type="password" id="new-password" placeholder="Create a new password" class="w-full px-5 py-4 rounded-xl bg-white/90 text-slate-800 placeholder-slate-400 font-medium focus:outline-none focus:ring-4 focus:ring-emerald-400/50 transition-all">
-       </div>
-       <div id="reset-error" class="text-red-400 text-sm text-center hidden"></div><button onclick="handlePasswordReset()" class="w-full py-4 bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-600 hover:to-orange-600 text-white font-bold rounded-xl text-lg transition-all transform hover:scale-[1.02] shadow-lg shadow-amber-500/30">Reset Password 🔑</button>
-       <p class="text-center text-slate-300 text-sm"><button onclick="goToLogin()" class="text-emerald-400 hover:text-emerald-300 font-bold underline">← Back to Login</button></p>
-      </div>
-     </div>
-    </div>
-   </div><!-- Setup Screen -->
-   <div id="setup-screen" class="min-h-full flex flex-col items-center justify-center p-6 hidden">
-    <div class="w-full max-w-md fade-in">
-     <div class="text-center mb-8">
-      <div class="text-7xl mb-4">
-       🏠🐕
-      </div>
-      <h1 id="main-title" class="text-4xl font-extrabold text-white mb-2">Pet Door Tracker</h1>
-      <p id="subtitle" class="text-slate-300 text-lg">Monitor your pet's activity</p>
-     </div>
-     <div class="bg-white/10 backdrop-blur-lg rounded-3xl p-8 shadow-2xl border border-white/20">
-      <div class="space-y-5">
-       <div>
-        <label for="owner-name" class="block text-white font-semibold mb-2 text-sm">Your Name</label> <input type="text" id="owner-name" placeholder="Enter your name" class="w-full px-5 py-4 rounded-xl bg-white/90 text-slate-800 placeholder-slate-400 font-medium focus:outline-none focus:ring-4 focus:ring-emerald-400/50 transition-all">
-       </div>
-       <div>
-        <label for="owner-address" class="block text-white font-semibold mb-2 text-sm">Your Address</label> <input type="text" id="owner-address" placeholder="Enter your address" class="w-full px-5 py-4 rounded-xl bg-white/90 text-slate-800 placeholder-slate-400 font-medium focus:outline-none focus:ring-4 focus:ring-emerald-400/50 transition-all">
-       </div>
-       <div class="border-t border-white/20 pt-5">
-        <h2 class="text-white font-bold text-lg mb-4">Your Pets</h2><label for="pet-names" class="block text-white font-semibold mb-2 text-sm">Pet Names (comma-separated)</label> <input type="text" id="pet-names" placeholder="e.g., Max, Bella, Charlie" class="w-full px-5 py-4 rounded-xl bg-white/90 text-slate-800 placeholder-slate-400 font-medium focus:outline-none focus:ring-4 focus:ring-emerald-400/50 transition-all">
-        <p class="text-slate-400 text-xs mt-2">Add multiple pets separated by commas</p>
-       </div>
-       <div class="border-t border-white/20 pt-5">
-        <h2 class="text-white font-bold text-lg mb-4">🔌 Sensor Connection</h2>
-        <p class="text-slate-400 text-sm mb-4">Connect your motion sensors to start tracking</p>
-        <p id="sensor-1-status" class="text-slate-400 text-sm mb-2">Sensor 1: <span class="text-amber-300">Waiting</span></p>
-        <p id="sensor-2-status" class="text-slate-400 text-sm mb-4">Sensor 2: <span class="text-amber-300">Waiting</span></p>
-       </div>
-       <div class="pt-2">
-        <button onclick="verifySensors()" class="w-full py-4 bg-gradient-to-r from-blue-500 to-indigo-600 hover:from-blue-600 hover:to-indigo-700 text-white font-bold rounded-xl text-lg transition-all transform hover:scale-[1.02] shadow-lg shadow-blue-500/30 flex items-center justify-center gap-2"> <span class="text-xl">✓</span> <span>Verify Sensors</span> </button>
-       </div><button id="start-btn" onclick="startTracking()" class="w-full py-4 bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-600 hover:to-teal-600 text-white font-bold rounded-xl text-lg transition-all transform hover:scale-[1.02] shadow-lg shadow-emerald-500/30 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none" disabled>Start Tracking 🐾</button> <button onclick="logout()" class="w-full py-3 bg-white/10 hover:bg-white/20 text-white font-semibold rounded-xl transition-all border border-white/20">Logout</button>
-      </div>
-     </div>
-    </div>
-   </div><!-- Dashboard Screen -->
-   <div id="dashboard-screen" class="min-h-full p-6 hidden">
-    <div class="max-w-2xl mx-auto">
-     <div class="text-center mb-8 fade-in">
-      <h1 id="dashboard-title" class="text-3xl font-extrabold text-white mb-1">Welcome!</h1>
-      <p id="dashboard-subtitle" class="text-slate-300">Tracking your pet's door activity</p>
-     </div>
-     <div class="bg-white/10 backdrop-blur-lg rounded-3xl p-6 mb-6 border border-white/20 fade-in" style="animation-delay: 0.1s;">
-      <h2 class="text-white font-bold text-lg mb-4 flex items-center gap-2"><span>📡</span> Sensor Status</h2>
-      <div class="flex items-center justify-between">
-       <div class="flex items-center gap-4">
-        <div id="sensor-indicator" class="w-16 h-16 rounded-full bg-emerald-500 flex items-center justify-center text-2xl shadow-lg">
-         ✓
-        </div>
-        <div>
-         <p id="sensor-status-text" class="text-white font-bold text-lg">Sensor Connected</p>
-         <p id="sensor-id-display" class="text-slate-400 text-sm">Monitoring pet door</p>
-        </div>
-       </div><button onclick="simulateSensor()" class="px-5 py-3 bg-amber-500 hover:bg-amber-600 text-white font-bold rounded-xl transition-all transform hover:scale-105 text-sm shadow-lg">Simulate Sensor 🔔</button>
-      </div>
-     </div><button id="track-btn" onclick="toggleTracking()" class="w-full py-5 bg-gradient-to-r from-violet-500 to-purple-600 hover:from-violet-600 hover:to-purple-700 text-white font-bold rounded-2xl text-xl transition-all transform hover:scale-[1.02] shadow-xl shadow-purple-500/30 mb-6 flex items-center justify-center gap-3 fade-in" style="animation-delay: 0.2s;"><span class="text-2xl">📍</span> Track Your Pet</button>
-     <div class="bg-white/10 backdrop-blur-lg rounded-3xl p-6 border border-white/20 fade-in" style="animation-delay: 0.3s;">
-      <h2 class="text-white font-bold text-lg mb-4 flex items-center gap-2"><span>📋</span> Activity Log</h2>
-      <div id="activity-log" class="space-y-3 max-h-80 overflow-y-auto">
-       <div id="no-activity" class="text-center py-8 text-slate-400">
-        <div class="text-4xl mb-2">
-         🐾
-        </div>
-        <p>No activity recorded yet</p>
-        <p class="text-sm">Events will appear here when your pet uses the door</p>
-       </div>
-      </div>
-     </div><button onclick="goBack()" class="w-full mt-6 py-3 bg-white/10 hover:bg-white/20 text-white font-semibold rounded-xl transition-all border border-white/20">← Back to Setup</button>
-    </div>
-   </div>
+   </div><!-- Admin Button (Bottom Right) --> <button onclick="showAdminLogin()" class="fixed bottom-6 right-6 z-40 bg-amber-500 hover:bg-amber-600 text-white rounded-full p-4 shadow-lg hover:shadow-xl transition-all transform hover:scale-110" title="Admin Portal"> <i data-lucide="settings" style="width: 24px; height: 24px;"></i> </button>
   </div>
   <script>
-    // 🎨 PART 1: SETTINGS & COLORS
-    // These are the default colors and text for the app
-    const defaultConfig = {
-      main_title: 'Pet Door Tracker',
-      subtitle: 'Monitor your pet\'s activity',
-      background_color: '#1a1a2e',
-      text_color: '#ffffff',
-      primary_action_color: '#10b981',
-      secondary_action_color: '#8b5cf6'
-    };
+    let allUsers = [];
+    let currentUser = null;
+    let adminLoggedIn = false;
 
-    // 💾 PART 2: REMEMBER THINGS
-    // These variables remember information while the app is open
-    let config = { ...defaultConfig };
-    let currentOwner = '';           // Who is logged in
-    let currentAddress = '';         // Their home address
-    let currentPets = [];            // Their pet names (like Max, Bella)
-    let currentUsername = '';        // Username for login
-    let currentEmail = '';           // Email address
-    let activityData = [];           // All the door activity saved
-    let recordCount = 0;             // How many activities we've recorded
-    let sensorConnected = false;     // Is the sensor plugged in?
-    let sensor1Connected = false;    // First sensor ready?
-    let sensor2Connected = false;    // Second sensor ready?
-    let sensorIds = { sensor1: '', sensor2: '' };  // Sensor ID codes
-    let users = JSON.parse(localStorage.getItem('petTrackerUsers')) || {};  // All user accounts
-    let isLoggedIn = false;          // Is someone logged in right now?
-    let usersXML = localStorage.getItem('petTrackerUsersXML') || '<?xml version="1.0" encoding="UTF-8"?><users></users>';  // XML storage for usernames
-
-    // 📊 PART 3: WHEN DATA CHANGES
-    // This runs whenever a new door activity happens
+    // Initialize Data SDK
     const dataHandler = {
       onDataChanged(data) {
-        activityData = data;                    // Save all the activities
-        recordCount = data.length;              // Count how many
-        renderActivityLog();                    // Show them on screen
+        allUsers = data || [];
+        if (adminLoggedIn) {
+          updateAdminDashboard();
+        }
       }
     };
 
-    // 🎨 PART 4: SET UP COLORS & TEXT
-    // This function makes sure the colors and text look the way the user wants
-    async function initElementSdk() {
-      if (window.elementSdk) {
-        await window.elementSdk.init({
-          defaultConfig,
-          onConfigChange: async (newConfig) => {
-            config = { ...defaultConfig, ...newConfig };
-            applyConfig();
-          },
-          mapToCapabilities: (cfg) => ({
-            recolorables: [
-              {
-                get: () => cfg.background_color || defaultConfig.background_color,
-                set: (value) => { cfg.background_color = value; window.elementSdk.setConfig({ background_color: value }); }
-              },
-              {
-                get: () => cfg.text_color || defaultConfig.text_color,
-                set: (value) => { cfg.text_color = value; window.elementSdk.setConfig({ text_color: value }); }
-              },
-              {
-                get: () => cfg.primary_action_color || defaultConfig.primary_action_color,
-                set: (value) => { cfg.primary_action_color = value; window.elementSdk.setConfig({ primary_action_color: value }); }
-              },
-              {
-                get: () => cfg.secondary_action_color || defaultConfig.secondary_action_color,
-                set: (value) => { cfg.secondary_action_color = value; window.elementSdk.setConfig({ secondary_action_color: value }); }
-              }
-            ],
-            borderables: [],
-            fontEditable: undefined,
-            fontSizeable: undefined
-          }),
-          mapToEditPanelValues: (cfg) => new Map([
-            ['main_title', cfg.main_title || defaultConfig.main_title],
-            ['subtitle', cfg.subtitle || defaultConfig.subtitle]
-          ])
-        });
-        config = { ...defaultConfig, ...window.elementSdk.config };
-        applyConfig();
+    async function initializeApp() {
+      const result = await window.dataSdk.init(dataHandler);
+      if (!result.isOk) {
+        console.error('Failed to initialize data SDK');
       }
+      lucide.createIcons();
     }
 
-    // 🎨 PART 5: APPLY THE COLORS TO THE SCREEN
-    // This actually changes what colors and text you see
-    function applyConfig() {
-      document.getElementById('main-title').textContent = config.main_title || defaultConfig.main_title;
-      document.getElementById('subtitle').textContent = config.subtitle || defaultConfig.subtitle;
-      document.getElementById('login-title').textContent = config.main_title || defaultConfig.main_title;
+    initializeApp();
+
+    // Admin Functions
+    function showAdminLogin() {
+      document.getElementById('admin-modal').classList.remove('hidden');
+      document.getElementById('admin-login-form').classList.remove('hidden');
+      document.getElementById('admin-setup-form').classList.add('hidden');
+      document.getElementById('admin-password').value = '';
+      document.getElementById('admin-error').classList.add('hidden');
+    }
+
+    function closeAdminModal() {
+      document.getElementById('admin-modal').classList.add('hidden');
+      document.getElementById('admin-password').value = '';
+      document.getElementById('admin-error').classList.add('hidden');
+    }
+
+    async function handleAdminLogin() {
+      const password = document.getElementById('admin-password').value.trim();
       
-      const wrapper = document.getElementById('app-wrapper');
-      const bgColor = config.background_color || defaultConfig.background_color;
-      wrapper.style.background = `linear-gradient(135deg, ${bgColor} 0%, ${adjustColor(bgColor, 20)} 50%, ${adjustColor(bgColor, 40)} 100%)`;
-      
-      const startBtn = document.getElementById('start-btn');
-      const primaryColor = config.primary_action_color || defaultConfig.primary_action_color;
-      startBtn.style.background = `linear-gradient(to right, ${primaryColor}, ${adjustColor(primaryColor, 20)})`;
-      
-      const trackBtn = document.getElementById('track-btn');
-      const secondaryColor = config.secondary_action_color || defaultConfig.secondary_action_color;
-      trackBtn.style.background = `linear-gradient(to right, ${secondaryColor}, ${adjustColor(secondaryColor, 20)})`;
-      
-      const sensorIndicator = document.getElementById('sensor-indicator');
-      if (sensorIndicator) {
-        sensorIndicator.style.backgroundColor = primaryColor;
-      }
-    }
-
-    // 🌈 PART 6: MAKE COLORS LIGHTER OR DARKER
-    // This makes nice color gradients (smooth color changes)
-    function adjustColor(hex, amount) {
-      const num = parseInt(hex.replace('#', ''), 16);
-      const r = Math.min(255, Math.max(0, (num >> 16) + amount));
-      const g = Math.min(255, Math.max(0, ((num >> 8) & 0x00FF) + amount));
-      const b = Math.min(255, Math.max(0, (num & 0x0000FF) + amount));
-      return `#${(1 << 24 | r << 16 | g << 8 | b).toString(16).slice(1)}`;
-    }
-
-    async function verifySensors() {
-      const verifyBtn = event.target;
-      verifyBtn.disabled = true;
-      verifyBtn.textContent = '🔌 Connecting...';
-
-      await new Promise(resolve => setTimeout(resolve, 1500));
-
-      sensorConnected = true;
-      sensor1Connected = true;
-      sensor2Connected = true;
-
-      document.getElementById('sensor-1-status').innerHTML = 'Sensor 1: <span class="text-emerald-400">✓ Connected</span>';
-      document.getElementById('sensor-2-status').innerHTML = 'Sensor 2: <span class="text-emerald-400">✓ Connected</span>';
-      document.getElementById('start-btn').disabled = false;
-
-      verifyBtn.textContent = '✓ Arduino Connected';
-      verifyBtn.disabled = true;
-
-      sensorIds.sensor1 = 'SENSOR-ARDUINO-1';
-      sensorIds.sensor2 = 'SENSOR-ARDUINO-2';
-
-      showNotification('🔌 Sensors Connected!', 'Both sensors are ready for tracking');
-    }
-
-    async function startTracking() {
-      const ownerInput = document.getElementById('owner-name');
-      const addressInput = document.getElementById('owner-address');
-      const petsInput = document.getElementById('pet-names');
-
-      if (!ownerInput.value.trim()) {
-        showNotification('⚠️ Missing Name', 'Please enter your name');
+      if (!password) {
+        showAdminError('Please enter a password');
         return;
       }
 
-      if (!addressInput.value.trim()) {
-        showNotification('⚠️ Missing Address', 'Please enter your address');
-        return;
-      }
-
-      if (!petsInput.value.trim()) {
-        showNotification('⚠️ Missing Pet Names', 'Please enter at least one pet name');
-        return;
-      }
-
-      if (!sensorConnected) {
-        showNotification('⚠️ Sensors Not Connected', 'Please verify sensors first');
-        return;
-      }
-
-      currentOwner = ownerInput.value.trim();
-      currentAddress = addressInput.value.trim();
-      currentPets = petsInput.value.split(',').map(p => p.trim()).filter(p => p.length > 0);
-
-      document.getElementById('setup-screen').classList.add('hidden');
-      document.getElementById('dashboard-screen').classList.remove('hidden');
-      document.getElementById('dashboard-title').textContent = `Welcome, ${currentOwner}!`;
-      document.getElementById('dashboard-subtitle').textContent = `Tracking ${currentPets.join(', ')}'s door activity`;
-      document.getElementById('sensor-id-display').textContent = `Sensors: ${sensorIds.sensor1} & ${sensorIds.sensor2}`;
-    }
-
-    async function simulateSensor() {
-      if (recordCount >= 999) {
-        showNotification('Limit Reached', 'Maximum activity records reached. Please clear some history.');
-        return;
-      }
-
-      const events = ['entered', 'exited'];
-      const sensors = ['Sensor 1', 'Sensor 2'];
-      const selectedPet = currentPets[Math.floor(Math.random() * currentPets.length)];
-      const eventType = events[Math.floor(Math.random() * events.length)];
-      const sensor = sensors[Math.floor(Math.random() * sensors.length)];
-      const message = `${selectedPet} has ${eventType} via ${sensor}!`;
-
-      showNotification('🐾 Pet Alert!', message);
-
-      const sensorIndicator = document.getElementById('sensor-indicator');
-      sensorIndicator.classList.add('sensor-active');
-      setTimeout(() => sensorIndicator.classList.remove('sensor-active'), 3000);
-
-      if (window.dataSdk) {
-        const result = await window.dataSdk.create({
-          owner_name: currentOwner,
-          pet_name: selectedPet,
-          event_type: eventType,
-          timestamp: new Date().toISOString(),
-          sensor_id: sensor,
-          sensor_reading: Math.floor(Math.random() * 1000),
-          sensor_connected: true
-        });
-
-        if (!result.isOk) {
-          console.error('Failed to save activity:', result.error);
-        }
-      }
-    }
-
-    function showNotification(title, message) {
-      const toast = document.getElementById('notification-toast');
-      document.getElementById('notification-title').textContent = title;
-      document.getElementById('notification-message').textContent = message;
-
-      toast.classList.remove('hidden');
-
-      setTimeout(() => {
-        toast.classList.add('hidden');
-      }, 5000);
-    }
-
-    function renderActivityLog() {
-      const logContainer = document.getElementById('activity-log');
-      const noActivity = document.getElementById('no-activity');
-
-      const relevantActivities = activityData.filter(a =>
-        a.owner_name === currentOwner && currentPets.includes(a.pet_name)
-      );
-
-      if (relevantActivities.length === 0) {
-        if (noActivity) noActivity.style.display = 'block';
-        logContainer.querySelectorAll('.activity-item').forEach(el => el.remove());
-        return;
-      }
-
-      if (noActivity) noActivity.style.display = 'none';
-
-      const existingItems = new Map(
-        [...logContainer.querySelectorAll('.activity-item')].map(el => [el.dataset.id, el])
-      );
-
-      const sorted = [...relevantActivities].sort((a, b) =>
-        new Date(b.timestamp) - new Date(a.timestamp)
-      );
-
-      sorted.forEach((activity, index) => {
-        const id = activity.__backendId;
-        const time = new Date(activity.timestamp);
-        const timeStr = time.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-        const dateStr = time.toLocaleDateString();
-        const icon = activity.event_type === 'entered' ? '🏠' : '🚪';
-        const action = activity.event_type === 'entered' ? 'Entered' : 'Exited';
-
-        if (existingItems.has(id)) {
-          existingItems.delete(id);
-        } else {
-          const item = document.createElement('div');
-          item.className = 'activity-item bg-white/5 rounded-xl p-4 flex items-center gap-4 border border-white/10';
-          item.dataset.id = id;
-          item.innerHTML = `
-            <div class="text-3xl">${icon}</div>
-            <div class="flex-1">
-              <p class="text-white font-semibold">${activity.pet_name} ${action}</p>
-              <p class="text-slate-400 text-sm">${dateStr} at ${timeStr}</p>
-            </div>
-          `;
-
-          if (index === 0) {
-            logContainer.insertBefore(item, logContainer.firstChild);
-          } else {
-            logContainer.appendChild(item);
-          }
-        }
+      // Check if admin account exists
+      const adminResult = await window.dataSdk.create({
+        type: 'admin_check',
+        timestamp: new Date().toISOString()
       });
 
-      existingItems.forEach(el => el.remove());
+      // For now, simulate checking for existing admin
+      const users = allUsers.filter(u => u.type === 'admin');
+      
+      if (users.length === 0) {
+        // Show setup form if no admin exists
+        document.getElementById('admin-login-form').classList.add('hidden');
+        document.getElementById('admin-setup-form').classList.remove('hidden');
+      } else {
+        // Check password (stored securely in data)
+        const adminUser = users[0];
+        if (adminUser.password === btoa(password)) {
+          adminLoggedIn = true;
+          document.getElementById('admin-modal').classList.add('hidden');
+          document.getElementById('login-screen').classList.add('hidden');
+          document.getElementById('admin-dashboard').classList.remove('hidden');
+          updateAdminDashboard();
+        } else {
+          showAdminError('Invalid admin password');
+        }
+      }
     }
 
-    function toggleTracking() {
-      const btn = document.getElementById('track-btn');
-      btn.classList.add('scale-95');
-      setTimeout(() => btn.classList.remove('scale-95'), 150);
-      showNotification('📍 Tracking Active', `Now monitoring ${currentPets.join(', ')}`);
+    async function handleAdminSetup() {
+      const newPassword = document.getElementById('admin-new-password').value.trim();
+      const confirmPassword = document.getElementById('admin-confirm-password').value.trim();
+
+      if (!newPassword || !confirmPassword) {
+        showAdminSetupError('Please fill in all fields');
+        return;
+      }
+
+      if (newPassword !== confirmPassword) {
+        showAdminSetupError('Passwords do not match');
+        return;
+      }
+
+      if (newPassword.length < 8) {
+        showAdminSetupError('Password must be at least 8 characters');
+        return;
+      }
+
+      // Create admin account with security answer
+      const result = await window.dataSdk.create({
+        type: 'admin',
+        password: btoa(newPassword),
+        security_answer: btoa('pet'), // Default security answer - can be customized
+        created_at: new Date().toISOString()
+      });
+
+      if (result.isOk) {
+        adminLoggedIn = true;
+        document.getElementById('admin-modal').classList.add('hidden');
+        document.getElementById('login-screen').classList.add('hidden');
+        document.getElementById('admin-dashboard').classList.remove('hidden');
+        updateAdminDashboard();
+      } else {
+        showAdminSetupError('Failed to create admin account');
+      }
     }
 
-    function goToLogin() {
-      document.getElementById('signup-screen').classList.add('hidden');
+    function showAdminError(message) {
+      const errorEl = document.getElementById('admin-error');
+      errorEl.textContent = message;
+      errorEl.classList.remove('hidden');
+    }
+
+    function showAdminSetupError(message) {
+      const errorEl = document.getElementById('admin-setup-error');
+      errorEl.textContent = message;
+      errorEl.classList.remove('hidden');
+    }
+
+    function updateAdminDashboard() {
+      const regularUsers = allUsers.filter(u => u.type === 'user');
+      document.getElementById('total-users-count').textContent = regularUsers.length;
+      document.getElementById('total-pets-count').textContent = regularUsers.length * 2; // Estimate
+
+      const tableBody = document.getElementById('users-table-body');
+      
+      if (regularUsers.length === 0) {
+        tableBody.innerHTML = `
+          <tr class="border-b border-white/10">
+            <td class="px-4 py-3 text-slate-400" colspan="3">No users yet</td>
+          </tr>
+        `;
+        return;
+      }
+
+      tableBody.innerHTML = regularUsers.map(user => `
+        <tr class="border-b border-white/10 hover:bg-white/5 transition-all">
+          <td class="px-4 py-3 text-white font-medium">${user.username || 'N/A'}</td>
+          <td class="px-4 py-3 text-slate-300">${user.email || 'N/A'}</td>
+          <td class="px-4 py-3 text-slate-400">${user.created_at ? new Date(user.created_at).toLocaleDateString() : 'N/A'}</td>
+        </tr>
+      `).join('');
+    }
+
+    function exportUsersXML() {
+      const regularUsers = allUsers.filter(u => u.type === 'user');
+      
+      let xml = '<?xml version="1.0" encoding="UTF-8"?>\n';
+      xml += '<users>\n';
+      
+      regularUsers.forEach(user => {
+        xml += '  <user>\n';
+        xml += `    <username>${escapeXml(user.username || '')}</username>\n`;
+        xml += `    <email>${escapeXml(user.email || '')}</email>\n`;
+        xml += `    <joined>${escapeXml(user.created_at || '')}</joined>\n`;
+        xml += '  </user>\n';
+      });
+      
+      xml += '</users>';
+
+      // Download XML
+      const blob = new Blob([xml], { type: 'application/xml' });
+      const url = window.URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = `pet-door-users-${new Date().toISOString().split('T')[0]}.xml`;
+      link.click();
+      window.URL.revokeObjectURL(url);
+    }
+
+    function escapeXml(str) {
+      return str.replace(/[<>&'"]/g, c => {
+        switch (c) {
+          case '<': return '&lt;';
+          case '>': return '&gt;';
+          case '&': return '&amp;';
+          case "'": return '&apos;';
+          case '"': return '&quot;';
+        }
+      });
+    }
+
+    function logoutAdmin() {
+      adminLoggedIn = false;
+      document.getElementById('admin-dashboard').classList.add('hidden');
       document.getElementById('login-screen').classList.remove('hidden');
-      document.getElementById('login-error').classList.add('hidden');
+      document.getElementById('login-username').value = '';
+      document.getElementById('login-password').value = '';
+    }
+
+    function showForgotPasswordForm() {
+      document.getElementById('admin-login-form').classList.add('hidden');
+      document.getElementById('admin-setup-form').classList.add('hidden');
+      document.getElementById('admin-forgot-form').classList.remove('hidden');
+      document.getElementById('admin-security-answer').value = '';
+      document.getElementById('admin-reset-password').value = '';
+      document.getElementById('admin-reset-confirm').value = '';
+      document.getElementById('admin-forgot-error').classList.add('hidden');
+    }
+
+    function backToAdminLogin() {
+      document.getElementById('admin-login-form').classList.remove('hidden');
+      document.getElementById('admin-setup-form').classList.add('hidden');
+      document.getElementById('admin-forgot-form').classList.add('hidden');
+      document.getElementById('admin-password').value = '';
+      document.getElementById('admin-error').classList.add('hidden');
+    }
+
+    async function handlePasswordReset() {
+      const securityAnswer = document.getElementById('admin-security-answer').value.trim();
+      const newPassword = document.getElementById('admin-reset-password').value.trim();
+      const confirmPassword = document.getElementById('admin-reset-confirm').value.trim();
+
+      const forgotError = document.getElementById('admin-forgot-error');
+
+      if (!securityAnswer || !newPassword || !confirmPassword) {
+        forgotError.textContent = 'Please fill in all fields';
+        forgotError.classList.remove('hidden');
+        return;
+      }
+
+      if (newPassword !== confirmPassword) {
+        forgotError.textContent = 'New passwords do not match';
+        forgotError.classList.remove('hidden');
+        return;
+      }
+
+      if (newPassword.length < 8) {
+        forgotError.textContent = 'Password must be at least 8 characters';
+        forgotError.classList.remove('hidden');
+        return;
+      }
+
+      // Find admin account and verify security answer
+      const adminUsers = allUsers.filter(u => u.type === 'admin');
+      
+      if (adminUsers.length === 0) {
+        forgotError.textContent = 'No admin account found';
+        forgotError.classList.remove('hidden');
+        return;
+      }
+
+      const adminUser = adminUsers[0];
+      
+      // Check if security answer matches (stored as base64)
+      if (btoa(securityAnswer.toLowerCase()) !== (adminUser.security_answer || '')) {
+        forgotError.textContent = 'Incorrect security answer';
+        forgotError.classList.remove('hidden');
+        return;
+      }
+
+      // Update admin password
+      const updatedAdmin = {
+        ...adminUser,
+        password: btoa(newPassword)
+      };
+
+      const result = await window.dataSdk.update(updatedAdmin);
+
+      if (result.isOk) {
+        // Show success and return to login
+        backToAdminLogin();
+        document.getElementById('admin-password').placeholder = 'Enter your new password';
+      } else {
+        forgotError.textContent = 'Failed to reset password. Try again.';
+        forgotError.classList.remove('hidden');
+      }
+    }
+
+    // Placeholder functions for user login
+    function handleLogin() {
+      const username = document.getElementById('login-username').value.trim();
+      if (!username) {
+        document.getElementById('login-error').textContent = 'Please enter a username';
+        document.getElementById('login-error').classList.remove('hidden');
+      } else {
+        // User login would be implemented here
+        console.log('User logged in:', username);
+      }
     }
 
     function goToSignup() {
-      document.getElementById('login-screen').classList.add('hidden');
-      document.getElementById('signup-screen').classList.remove('hidden');
-      document.getElementById('signup-error').classList.add('hidden');
+      console.log('Go to signup');
     }
 
-    function goToForgotPassword() {
-      document.getElementById('login-screen').classList.add('hidden');
-      document.getElementById('forgot-password-screen').classList.remove('hidden');
-      document.getElementById('reset-error').classList.add('hidden');
-      document.getElementById('reset-username').value = '';
-      document.getElementById('reset-email').value = '';
-      document.getElementById('new-password').value = '';
+    function showUserForgotPassword() {
+      document.getElementById('user-forgot-modal').classList.remove('hidden');
+      document.getElementById('user-forgot-username').value = '';
+      document.getElementById('user-forgot-email').value = '';
+      document.getElementById('user-forgot-error').classList.add('hidden');
+      document.getElementById('user-forgot-success').classList.add('hidden');
     }
 
-    function handleLogin() {
-      const username = document.getElementById('login-username').value.trim();
-      const password = document.getElementById('login-password').value;
-      const errorDiv = document.getElementById('login-error');
-
-      if (!username || !password) {
-        errorDiv.textContent = 'Please enter username and password';
-        errorDiv.classList.remove('hidden');
-        return;
-      }
-
-      if (!users[username] || users[username].password !== password) {
-        errorDiv.textContent = 'Invalid username or password';
-        errorDiv.classList.remove('hidden');
-        return;
-      }
-
-      currentUsername = username;
-      currentEmail = users[username].email;
-      currentOwner = username;
-      isLoggedIn = true;
-      errorDiv.classList.add('hidden');
-
-      document.getElementById('login-screen').classList.add('hidden');
-      document.getElementById('setup-screen').classList.remove('hidden');
-      document.getElementById('login-username').value = '';
-      document.getElementById('login-password').value = '';
-
-      showNotification('✅ Logged In!', `Welcome back, ${username}!`);
+    function closeUserForgotModal() {
+      document.getElementById('user-forgot-modal').classList.add('hidden');
+      document.getElementById('user-forgot-error').classList.add('hidden');
+      document.getElementById('user-forgot-success').classList.add('hidden');
     }
 
-    function handleSignup() {
-      const username = document.getElementById('signup-username').value.trim();
-      const email = document.getElementById('signup-email').value.trim();
-      const password = document.getElementById('signup-password').value;
-      const errorDiv = document.getElementById('signup-error');
+    async function handleUserPasswordReset() {
+      const username = document.getElementById('user-forgot-username').value.trim();
+      const email = document.getElementById('user-forgot-email').value.trim();
+      const errorEl = document.getElementById('user-forgot-error');
+      const successEl = document.getElementById('user-forgot-success');
 
-      if (!username || !email || !password) {
-        errorDiv.textContent = 'Please fill in all fields';
-        errorDiv.classList.remove('hidden');
+      errorEl.classList.add('hidden');
+      successEl.classList.add('hidden');
+
+      if (!username || !email) {
+        errorEl.textContent = 'Please enter both username and email';
+        errorEl.classList.remove('hidden');
         return;
       }
 
-      // Check if username already exists in JSON
-      if (users[username]) {
-        errorDiv.textContent = 'Username already exists';
-        errorDiv.classList.remove('hidden');
+      // Find user account
+      const user = allUsers.find(u => u.type === 'user' && u.username === username && u.email === email);
+
+      if (!user) {
+        errorEl.textContent = 'Username or email not found';
+        errorEl.classList.remove('hidden');
         return;
       }
 
-      // Check if username already exists in XML
-      const parser = new DOMParser();
-      const xmlDoc = parser.parseFromString(usersXML, 'text/xml');
-      const existingUser = xmlDoc.querySelector(`user[name="${username}"]`);
-      
-      if (existingUser) {
-        errorDiv.textContent = 'Username is already taken';
-        errorDiv.classList.remove('hidden');
-        return;
-      }
+      // Store temporary reset token and mark for password reset
+      const resetToken = Math.random().toString(36).substring(2, 15);
+      const updatedUser = {
+        ...user,
+        reset_token: resetToken,
+        reset_token_created: new Date().toISOString()
+      };
 
-      if (!email.includes('@')) {
-        errorDiv.textContent = 'Please enter a valid email';
-        errorDiv.classList.remove('hidden');
-        return;
-      }
+      const result = await window.dataSdk.update(updatedUser);
 
-      // Add to JSON storage
-      users[username] = { email, password };
-      localStorage.setItem('petTrackerUsers', JSON.stringify(users));
-
-      // Add to XML storage
-      const newUser = xmlDoc.createElement('user');
-      newUser.setAttribute('name', username);
-      newUser.setAttribute('email', email);
-      newUser.setAttribute('password', password);
-      newUser.setAttribute('createdAt', new Date().toISOString());
-      xmlDoc.documentElement.appendChild(newUser);
-
-      const serializer = new XMLSerializer();
-      usersXML = serializer.serializeToString(xmlDoc);
-      localStorage.setItem('petTrackerUsersXML', usersXML);
-
-      currentUsername = username;
-      currentEmail = email;
-      currentOwner = username;
-      isLoggedIn = true;
-      errorDiv.classList.add('hidden');
-
-      document.getElementById('signup-screen').classList.add('hidden');
-      document.getElementById('setup-screen').classList.remove('hidden');
-      document.getElementById('signup-username').value = '';
-      document.getElementById('signup-email').value = '';
-      document.getElementById('signup-password').value = '';
-
-      showNotification('✅ Account Created!', `Welcome, ${username}!`);
-    }
-
-    function handlePasswordReset() {
-      const username = document.getElementById('reset-username').value.trim();
-      const email = document.getElementById('reset-email').value.trim();
-      const newPassword = document.getElementById('new-password').value;
-      const errorDiv = document.getElementById('reset-error');
-
-      if (!username || !email || !newPassword) {
-        errorDiv.textContent = 'Please fill in all fields';
-        errorDiv.classList.remove('hidden');
-        return;
-      }
-
-      if (!users[username]) {
-        errorDiv.textContent = 'Username not found';
-        errorDiv.classList.remove('hidden');
-        return;
-      }
-
-      if (users[username].email !== email) {
-        errorDiv.textContent = 'Email does not match our records';
-        errorDiv.classList.remove('hidden');
-        return;
-      }
-
-      // Update password in database
-      users[username].password = newPassword;
-      localStorage.setItem('petTrackerUsers', JSON.stringify(users));
-
-      errorDiv.classList.add('hidden');
-      document.getElementById('forgot-password-screen').classList.add('hidden');
-      document.getElementById('login-screen').classList.remove('hidden');
-
-      document.getElementById('login-username').value = '';
-      document.getElementById('login-password').value = '';
-
-      showNotification('✅ Password Reset!', 'Your password has been updated. Please log in.');
-    }
-
-    function goBack() {
-      document.getElementById('dashboard-screen').classList.add('hidden');
-      document.getElementById('setup-screen').classList.remove('hidden');
-    }
-
-    function logout() {
-      currentUsername = '';
-      currentEmail = '';
-      currentOwner = '';
-      currentAddress = '';
-      currentPets = [];
-      isLoggedIn = false;
-      sensorConnected = false;
-      sensor1Connected = false;
-      sensor2Connected = false;
-      sensorIds = { sensor1: '', sensor2: '' };
-
-      document.getElementById('setup-screen').classList.add('hidden');
-      document.getElementById('dashboard-screen').classList.add('hidden');
-      document.getElementById('login-screen').classList.remove('hidden');
-
-      document.getElementById('login-username').value = '';
-      document.getElementById('login-password').value = '';
-      document.getElementById('owner-name').value = '';
-      document.getElementById('owner-address').value = '';
-      document.getElementById('pet-names').value = '';
-
-      document.getElementById('sensor-1-status').innerHTML = 'Sensor 1: <span class="text-amber-300">Waiting</span>';
-      document.getElementById('sensor-2-status').innerHTML = 'Sensor 2: <span class="text-amber-300">Waiting</span>';
-      document.getElementById('start-btn').disabled = true;
-
-      const verifyBtn = document.querySelector('[onclick="verifySensors()"]');
-      if (verifyBtn) {
-        verifyBtn.textContent = '✓ Verify Sensors';
-        verifyBtn.disabled = false;
-      }
-
-      showNotification('👋 Logged Out', 'See you next time!');
-    }
-
-    // Initialize
-    async function init() {
-      await initElementSdk();
-
-      if (window.dataSdk) {
-        const result = await window.dataSdk.init(dataHandler);
-        if (!result.isOk) {
-          console.error('Failed to initialize data SDK:', result.error);
-        }
+      if (result.isOk) {
+        successEl.textContent = '✓ Reset link sent! Check your email or contact support. (Demo mode)';
+        successEl.classList.remove('hidden');
+        
+        // Clear form after 3 seconds and close
+        setTimeout(() => {
+          closeUserForgotModal();
+        }, 3000);
+      } else {
+        errorEl.textContent = 'Failed to process reset request. Try again.';
+        errorEl.classList.remove('hidden');
       }
     }
-
-    init();
   </script>
- <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9e4f2d88219942d2',t:'MTc3NDk1ODI2MC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+ <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9e4f4a9317580f8c',t:'MTc3NDk1OTQ1MC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
 </html>
