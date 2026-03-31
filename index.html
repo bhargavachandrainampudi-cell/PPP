@@ -1,177 +1,168 @@
 <!doctype html>
 <html lang="en" class="h-full">
- <head>
+<head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Pet Door Tracker</title>
-  <script src="https://cdn.tailwindcss.com"></script>
+  <title>PetTracker Pro</title>
+  <script src="https://tailwindcss.com"></script>
   <link href="https://googleapis.com" rel="stylesheet">
   <style>
-    body { box-sizing: border-box; font-family: 'Nunito', sans-serif; }
-    @keyframes slide-in { from { transform: translateX(100%); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
-    @keyframes fade-in { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
-    .notification-slide { animation: slide-in 0.5s ease-out; }
-    .fade-in { animation: fade-in 0.6s ease-out forwards; }
-    .activity-item { animation: fade-in 0.4s ease-out; }
-    .custom-scrollbar::-webkit-scrollbar { width: 6px; }
-    .custom-scrollbar::-webkit-scrollbar-thumb { background: rgba(255, 255, 255, 0.2); border-radius: 10px; }
+    body { font-family: 'Nunito', sans-serif; background: #0f172a; color: white; }
+    .glass { background: rgba(255, 255, 255, 0.05); backdrop-filter: blur(12px); border: 1px solid rgba(255, 255, 255, 0.1); }
+    @keyframes slideIn { from { transform: translateY(20px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+    .animate-in { animation: slideIn 0.5s ease-out forwards; }
+    .custom-scrollbar::-webkit-scrollbar { width: 5px; }
+    .custom-scrollbar::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.2); border-radius: 10px; }
   </style>
- </head>
- <body class="h-full">
-  <div id="app-wrapper" class="h-full w-full overflow-auto" style="background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);">
-   
-   <!-- Notification Toast -->
-   <div id="notification-toast" class="fixed top-4 right-4 z-50 hidden">
-    <div class="bg-emerald-500 text-white px-6 py-4 rounded-2xl shadow-2xl notification-slide flex items-center gap-3 max-w-sm">
-     <div class="text-3xl">🐾</div>
-     <div>
-      <p class="font-bold">Pet Alert!</p>
-      <p class="text-sm opacity-90" id="notification-message"></p>
-     </div>
-    </div>
-   </div>
-
-   <!-- Setup Screen (Replaced Arduino with Simulation) -->
-   <div id="setup-screen" class="min-h-full flex flex-col items-center justify-center p-6">
-    <div class="w-full max-w-md fade-in text-center">
-      <div class="text-7xl mb-4">🏠🐕</div>
-      <h1 class="text-4xl font-extrabold text-white mb-2">Pet Door Tracker</h1>
-      <p class="text-slate-300 mb-8">Ready to monitor your pet's activity?</p>
-      
-      <div class="bg-white/10 backdrop-blur-lg rounded-3xl p-8 shadow-2xl border border-white/20">
-        <button onclick="startTracking()" class="w-full py-4 bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-600 hover:to-teal-600 text-white font-bold rounded-xl text-lg transition-all transform hover:scale-[1.02] shadow-lg shadow-emerald-500/30"> 
-          Enter Dashboard 🐾 
-        </button>
+</head>
+<body class="h-full overflow-hidden">
+  <div class="h-full w-full p-4 md:p-8 flex flex-col items-center justify-start overflow-y-auto custom-scrollbar bg-gradient-to-br from-slate-900 via-blue-950 to-slate-900">
+    
+    <!-- Toast Notification -->
+    <div id="toast" class="fixed top-6 right-6 z-50 hidden animate-in">
+      <div class="glass bg-emerald-500/20 border-emerald-500/50 px-6 py-4 rounded-2xl shadow-2xl flex items-center gap-4">
+        <span class="text-2xl">🐾</span>
+        <div><p class="font-bold text-emerald-400">Activity Alert</p><p id="toast-msg" class="text-sm text-white/80"></p></div>
       </div>
     </div>
-   </div>
 
-   <!-- Dashboard Screen -->
-   <div id="dashboard-screen" class="min-h-full p-4 md:p-8 hidden">
-    <div class="max-w-5xl mx-auto">
-      <div class="flex flex-col sm:flex-row justify-between items-center gap-4 mb-8">
-        <h1 class="text-2xl md:text-3xl font-bold text-white">Activity Dashboard</h1>
-        <button onclick="toggleSimulation()" id="sim-btn" class="w-full sm:w-auto px-6 py-3 bg-purple-500 text-white font-bold rounded-xl hover:bg-purple-600 transition-all shadow-lg"> 
-          Start Simulation 🐾 
-        </button>
+    <!-- SCREEN 1: SETUP -->
+    <div id="setup-screen" class="w-full max-w-md mt-10 animate-in">
+      <div class="text-center mb-10">
+        <div class="text-6xl mb-4">🏡🐕</div>
+        <h1 class="text-4xl font-extrabold tracking-tight">Pet Door Tracker</h1>
+        <p class="text-slate-400">Configure your smart pet home</p>
       </div>
       
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6 mb-8 text-center sm:text-left">
-        <div class="bg-white/10 p-6 rounded-3xl border border-white/20 backdrop-blur-sm">
-          <p class="text-slate-400 text-xs uppercase tracking-wider font-semibold">Last Entry</p>
-          <p id="last-entry" class="text-3xl md:text-4xl text-emerald-400 font-black mt-1">--:--</p>
+      <div class="glass rounded-3xl p-8 space-y-6">
+        <div>
+          <label class="block text-xs font-bold uppercase tracking-widest text-slate-400 mb-2">Owner Name</label>
+          <input type="text" id="owner-input" placeholder="e.g. Alex" class="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 focus:ring-2 focus:ring-emerald-500 outline-none transition-all">
         </div>
-        <div class="bg-white/10 p-6 rounded-3xl border border-white/20 backdrop-blur-sm">
-          <p class="text-slate-400 text-xs uppercase tracking-wider font-semibold">Last Exit</p>
-          <p id="last-exit" class="text-3xl md:text-4xl text-blue-400 font-black mt-1">--:--</p>
+        <div>
+          <label class="block text-xs font-bold uppercase tracking-widest text-slate-400 mb-2">Pet Names</label>
+          <input type="text" id="pet-input" placeholder="Max, Bella, Charlie" class="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 focus:ring-2 focus:ring-emerald-500 outline-none transition-all">
         </div>
-      </div>
-
-      <div class="bg-white/10 backdrop-blur-lg rounded-3xl p-5 md:p-8 border border-white/20 shadow-2xl">
-        <h2 class="text-xl font-bold text-white mb-6">Recent Movements</h2>
-        <div id="activity-list" class="space-y-4 max-h-[400px] overflow-y-auto pr-2 custom-scrollbar">
-          <p class="text-slate-500 text-center py-12 italic">Waiting for activity...</p>
+        <div class="pt-4">
+          <button onclick="startApp()" class="w-full py-4 bg-emerald-500 hover:bg-emerald-400 text-slate-900 font-black rounded-2xl shadow-lg shadow-emerald-500/20 transition-all active:scale-95">
+            START TRACKING 🐾
+          </button>
         </div>
       </div>
     </div>
-   </div>
+
+    <!-- SCREEN 2: DASHBOARD -->
+    <div id="dash-screen" class="w-full max-w-5xl hidden animate-in">
+      <div class="flex flex-col md:flex-row justify-between items-end mb-8 gap-4">
+        <div>
+          <h2 id="welcome-msg" class="text-3xl font-black">Welcome back!</h2>
+          <p class="text-slate-400">System Status: <span class="text-emerald-400 font-bold">● Active Simulation</span></p>
+        </div>
+        <button onclick="toggleSim()" id="sim-btn" class="px-6 py-3 rounded-xl font-bold bg-white/10 hover:bg-white/20 transition-all">Start Simulation ⚡</button>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+        <div class="glass p-8 rounded-3xl relative overflow-hidden">
+          <div class="absolute -right-4 -top-4 text-7xl opacity-5">🏠</div>
+          <p class="text-xs font-black uppercase text-slate-400 tracking-widest">Last Entry</p>
+          <p id="last-in" class="text-4xl font-black text-emerald-400 mt-2">--:--</p>
+        </div>
+        <div class="glass p-8 rounded-3xl relative overflow-hidden">
+          <div class="absolute -right-4 -top-4 text-7xl opacity-5">🌳</div>
+          <p class="text-xs font-black uppercase text-slate-400 tracking-widest">Last Exit</p>
+          <p id="last-out" class="text-4xl font-black text-blue-400 mt-2">--:--</p>
+        </div>
+      </div>
+
+      <div class="glass rounded-3xl p-8">
+        <div class="flex justify-between items-center mb-6">
+          <h3 class="text-xl font-bold">Activity Feed</h3>
+          <button onclick="clearLogs()" class="text-xs font-bold text-slate-500 hover:text-red-400 uppercase tracking-widest">Clear History</button>
+        </div>
+        <div id="log-list" class="space-y-4 max-h-[400px] overflow-y-auto pr-2 custom-scrollbar">
+          <div class="text-center py-10 text-slate-500 italic">No activity recorded yet...</div>
+        </div>
+      </div>
+    </div>
 
   </div>
 
   <script>
-    const STORAGE_KEY = 'pet_tracker_history';
-    let isSimulating = false;
+    let isSim = false, pets = ["Max"];
+    const KEY = 'pet_history_pro';
 
-    // Load persistent history on startup
-    window.addEventListener('DOMContentLoaded', () => {
-      const savedHistory = JSON.parse(localStorage.getItem(STORAGE_KEY)) || [];
-      if (savedHistory.length > 0) {
-        const list = document.getElementById('activity-list');
-        list.innerHTML = ''; 
-        [...savedHistory].reverse().forEach(item => renderActivityItem(item, false));
-        const lastIn = savedHistory.find(h => h.direction === 'IN');
-        const lastOut = savedHistory.find(h => h.direction === 'OUT');
-        if (lastIn) updateStatusCards(lastIn);
-        if (lastOut) updateStatusCards(lastOut);
-      }
-    });
-
-    function startTracking() {
+    function startApp() {
+      const name = document.getElementById('owner-input').value || 'User';
+      const petStr = document.getElementById('pet-input').value;
+      if(petStr) pets = petStr.split(',').map(p => p.trim());
+      
+      document.getElementById('welcome-msg').innerText = `Hello, ${name}!`;
       document.getElementById('setup-screen').classList.add('hidden');
-      document.getElementById('dashboard-screen').classList.remove('hidden');
+      document.getElementById('dash-screen').classList.remove('hidden');
+      loadHistory();
     }
 
-    async function toggleSimulation() {
-      isSimulating = !isSimulating;
-      const btn = document.getElementById('sim-btn');
-      if (isSimulating) {
-        btn.innerText = "Stop Simulation 🛑";
-        btn.classList.replace('bg-purple-500', 'bg-red-500');
-        runSimulationLoop();
-      } else {
-        btn.innerText = "Start Simulation 🐾";
-        btn.classList.replace('bg-red-500', 'bg-purple-500');
-      }
+    function toggleSim() {
+      isSim = !isSim;
+      const b = document.getElementById('sim-btn');
+      b.innerText = isSim ? "Stop Simulation 🛑" : "Start Simulation ⚡";
+      b.classList.toggle('bg-red-500/20', isSim);
+      if(isSim) simLoop();
     }
 
-    async function runSimulationLoop() {
-      const pets = ["Max", "Bella", "Charlie"];
-      while (isSimulating) {
+    async function simLoop() {
+      while(isSim) {
         await new Promise(r => setTimeout(r, Math.random() * 4000 + 3000));
-        if (!isSimulating) break;
-        const pet = pets[Math.floor(Math.random() * pets.length)];
-        const direction = Math.random() > 0.5 ? "IN" : "OUT";
-        logMovement(pet, direction);
+        if(!isSim) break;
+        logEvent(pets[Math.floor(Math.random()*pets.length)], Math.random() > 0.5 ? 'IN' : 'OUT');
       }
     }
 
-    function logMovement(pet, direction) {
-      const moveData = { 
-        pet, 
-        direction, 
-        time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }), 
-        id: Date.now() 
-      };
-      
-      const history = JSON.parse(localStorage.getItem(STORAGE_KEY)) || [];
-      history.unshift(moveData);
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(history.slice(0, 50)));
-      
-      renderActivityItem(moveData, true);
-      updateStatusCards(moveData);
-      showToast(pet, direction);
+    function logEvent(pet, dir) {
+      const entry = { pet, dir, time: new Date().toLocaleTimeString([], {hour:'2-digit', minute:'2-digit'}), id: Date.now() };
+      const history = JSON.parse(localStorage.getItem(KEY)) || [];
+      history.unshift(entry);
+      localStorage.setItem(KEY, JSON.stringify(history.slice(0, 50)));
+      updateUI(entry, true);
     }
 
-    function renderActivityItem(data, isNew) {
-      const list = document.getElementById('activity-list');
-      if (list.querySelector('p')) list.innerHTML = ''; 
+    function updateUI(data, isNew) {
+      const list = document.getElementById('log-list');
+      if(list.innerText.includes('No activity')) list.innerHTML = '';
       
       const item = document.createElement('div');
-      item.className = `activity-item flex justify-between items-center bg-white/5 p-4 rounded-xl border border-white/10 ${isNew ? 'fade-in' : ''}`;
+      item.className = "flex justify-between items-center bg-white/5 p-4 rounded-2xl border border-white/5 animate-in";
       item.innerHTML = `
-        <div class="flex items-center gap-3">
-          <span class="text-2xl">${data.direction === 'IN' ? '🏠' : '🌳'}</span>
-          <div>
-            <p class="text-white font-bold">${data.pet}</p>
-            <p class="text-slate-400 text-xs">${data.direction === 'IN' ? 'Returned Home' : 'Went Outside'}</p>
-          </div>
+        <div class="flex items-center gap-4">
+          <span class="p-3 rounded-xl bg-white/5">${data.dir === 'IN' ? '🏠' : '🌳'}</span>
+          <div><p class="font-bold">${data.pet}</p><p class="text-xs text-slate-400">${data.dir === 'IN' ? 'Returned Home' : 'Went Outside'}</p></div>
         </div>
-        <span class="text-slate-400 font-mono text-sm">${data.time}</span>
+        <span class="text-xs font-bold text-slate-500">${data.time}</span>
       `;
       list.prepend(item);
+      document.getElementById(data.dir === 'IN' ? 'last-in' : 'last-out').innerText = data.time;
+      if(isNew) showToast(`${data.pet} is ${data.dir === 'IN' ? 'back inside' : 'out for a walk'}`);
     }
 
-    function updateStatusCards(data) {
-      const cardId = data.direction === 'IN' ? 'last-entry' : 'last-exit';
-      document.getElementById(cardId).innerText = data.time;
+    function showToast(msg) {
+      const t = document.getElementById('toast');
+      document.getElementById('toast-msg').innerText = msg;
+      t.classList.remove('hidden');
+      setTimeout(() => t.classList.add('hidden'), 3000);
     }
 
-    function showToast(pet, direction) {
-      const toast = document.getElementById('notification-toast');
-      document.getElementById('notification-message').innerText = `${pet} just ${direction === 'IN' ? 'entered' : 'exited'} the door!`;
-      toast.classList.remove('hidden');
-      setTimeout(() => toast.classList.add('hidden'), 3000);
+    function loadHistory() {
+      const h = JSON.parse(localStorage.getItem(KEY)) || [];
+      if(h.length) {
+        document.getElementById('log-list').innerHTML = '';
+        [...h].reverse().forEach(e => updateUI(e, false));
+      }
+    }
+
+    function clearLogs() {
+      localStorage.removeItem(KEY);
+      location.reload();
     }
   </script>
- </body>
+</body>
 </html>
